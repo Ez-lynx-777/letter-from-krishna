@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Krishna's Letter to Pallavi</title>
+<style>
+  /* Body and Galaxy Background */
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Georgia', serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background: radial-gradient(circle at center, #0b0033, #1a003d, #0b0022);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    position: relative;
+  }
+
+  /* Stars for galaxy */
+  .star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: twinkle 3s infinite;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 1; }
+  }
+
+  /* Floating hearts */
+  .heart {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: pink;
+    transform: rotate(-45deg);
+    animation: floatHeart 6s linear infinite;
+    z-index: 1;
+  }
+  .heart:before, .heart:after {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: pink;
+    border-radius: 50%;
+  }
+  .heart:before { top: -10px; left: 0; }
+  .heart:after { left: 10px; top: 0; }
+
+  @keyframes floatHeart {
+    0% { 
+      transform: translateY(100vh) rotate(-45deg) scale(0.5); 
+      opacity: 0; 
+    }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { 
+      transform: translateY(-100px) rotate(-45deg) scale(1); 
+      opacity: 0; 
+    }
+  }
+
+  /* Welcome Button */
+  .welcome-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgba(11, 0, 51, 0.95);
+    z-index: 1000;
+    transition: opacity 1s ease;
+  }
+
+  .welcome-btn {
+    padding: 20px 50px;
+    font-size: 2em;
+    background: linear-gradient(45deg, #ffd700, #ff6b8b);
+    border: none;
+    border-radius: 50px;
+    color: white;
+    cursor: pointer;
+    animation: pulseBtn 2s infinite;
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.7);
+    font-family: 'Georgia', serif;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+  .welcome-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 40px rgba(255, 215, 0, 0.9);
+  }
+
+  @keyframes pulseBtn {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+
+  .instruction {
+    margin-top: 20px;
+    font-size: 1.2em;
+    color: #ffd700;
+    opacity: 0.8;
+    animation: fadeInOut 3s infinite;
+  }
+
+  @keyframes fadeInOut {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+
+  /* Letter Scroll */
+  .letter {
+    background: rgba(0, 0, 0, 0.7);
+    border: 5px solid #ffd700;
+    border-radius: 30px;
+    padding: 40px 30px;
+    max-width: 700px;
+    text-align: center;
+    box-shadow: 0 0 30px #ffd700, 0 0 60px rgba(255, 215, 0, 0.3);
+    animation: floatLetter 6s ease-in-out infinite;
+    margin: 20px;
+    z-index: 10;
+    position: relative;
+    backdrop-filter: blur(5px);
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 1.5s ease, transform 1.5s ease;
+  }
+
+  .letter.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @keyframes floatLetter {
+    0%,100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(0.5deg); }
+  }
+
+  /* Krishna image floating */
+  .krishna {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin: 25px 0;
+    animation: floatImage 4s ease-in-out infinite;
+    border: 4px solid #ffd700;
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.6);
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 2s ease, transform 2s ease;
+  }
+
+  .krishna.show {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  @keyframes floatImage {
+    0%,100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-15px) scale(1.02); }
+  }
+
+  /* Text styling */
+  .letter h1 {
+    color: #ffd700;
+    margin-bottom: 10px;
+    font-size: 2.8em;
+    text-shadow: 0 0 15px #ffd700, 0 0 25px #ff69b4;
+    font-weight: normal;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .letter h1.show {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 1s ease, transform 1s ease;
+  }
+
+  .letter h1 .heart-emoji {
+    color: #ff6b8b;
+    text-shadow: 0 0 15px #ff6b8b, 0 0 25px #ff1493;
+    display: inline-block;
+    animation: pulseHeart 2s infinite;
+  }
+
+  @keyframes pulseHeart {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+  }
+
+  .letter p {
+    font-size: 1.3em;
+    line-height: 1.8;
+    color: #f8f8f8;
+    text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+    margin: 25px 0;
+    padding: 0 10px;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .letter p.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .letter p.special {
+    font-style: italic;
+    color: #ffd700;
+    font-size: 1.4em;
+    margin-top: 30px;
+  }
+
+  .signature {
+    color: #ffb347;
+    font-size: 1.8em;
+    margin-top: 40px;
+    text-shadow: 0 0 10px rgba(255, 179, 71, 0.8);
+    font-family: 'Brush Script MT', cursive;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .signature.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .sakhi {
+    color: #ff6b8b;
+    font-style: italic;
+    font-weight: bold;
+  }
+
+  /* Lotus floating */
+  .lotus {
+    position: absolute;
+    bottom: -50px;
+    left: 50%;
+    width: 100px;
+    animation: rise 8s ease-in-out infinite;
+    opacity: 0.8;
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.6));
+    z-index: 5;
+  }
+
+  @keyframes rise {
+    0% { 
+      transform: translate(-50%, 0) rotate(0deg) scale(0.8); 
+      opacity: 0; 
+    }
+    50% { 
+      transform: translate(-50%, -100px) rotate(15deg) scale(1.1); 
+      opacity: 0.8; 
+    }
+    100% { 
+      transform: translate(-50%, -200px) rotate(-15deg) scale(0.8); 
+      opacity: 0; 
+    }
+  }
+
+  /* Audio player styling */
+  audio {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    opacity: 0;
+    width: 250px;
+    transition: opacity 0.5s ease;
+    z-index: 100;
+  }
+
+  audio.show {
+    opacity: 0.8;
+  }
+
+  audio:hover {
+    opacity: 1;
+  }
+
+  /* Error message for missing files */
+  .error-message {
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 0, 0, 0.2);
+    border: 1px solid red;
+    padding: 10px 20px;
+    border-radius: 10px;
+    z-index: 1000;
+  }
+
+  /* Music note animation */
+  .music-note {
+    position: absolute;
+    font-size: 30px;
+    animation: floatNote 4s ease-in-out infinite;
+    opacity: 0;
+  }
+
+  @keyframes floatNote {
+    0% { 
+      transform: translateY(0) rotate(0deg); 
+      opacity: 0; 
+    }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { 
+      transform: translateY(-100px) rotate(360deg); 
+      opacity: 0; 
+    }
+  }
+
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .letter {
+      padding: 30px 20px;
+      margin: 15px;
+    }
+    
+    .letter h1 {
+      font-size: 2.2em;
+    }
+    
+    .letter p {
+      font-size: 1.1em;
+    }
+    
+    .letter p.special {
+      font-size: 1.2em;
+    }
+    
+    .krishna {
+      width: 160px;
+      height: 160px;
+    }
+    
+    .signature {
+      font-size: 1.5em;
+    }
+    
+    .welcome-btn {
+      font-size: 1.5em;
+      padding: 15px 30px;
+    }
+    
+    audio {
+      width: calc(100% - 40px);
+      left: 20px;
+      right: 20px;
+    }
+    
+    .lotus {
+      width: 70px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .letter {
+      padding: 20px 15px;
+      border-width: 3px;
+    }
+    
+    .letter h1 {
+      font-size: 1.9em;
+    }
+    
+    .letter p {
+      font-size: 1em;
+      line-height: 1.6;
+    }
+    
+    .letter p.special {
+      font-size: 1.1em;
+    }
+    
+    .krishna {
+      width: 140px;
+      height: 140px;
+    }
+    
+    .signature {
+      font-size: 1.3em;
+    }
+    
+    .welcome-btn {
+      font-size: 1.2em;
+      padding: 12px 25px;
+    }
+    
+    .instruction {
+      font-size: 1em;
+      padding: 0 20px;
+      text-align: center;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- Welcome Screen -->
+<div class="welcome-container" id="welcomeScreen">
+  <button class="welcome-btn" id="openLetterBtn">
+    📜 Open This Message 📜<br>
+    <small style="font-size: 0.5em;">This is for you</small>
+  </button>
+  <div class="instruction">Click the button to reveal the special message</div>
+</div>
+
+<!-- Error message -->
+<div class="error-message" id="errorMessage">
+  Some resources couldn't load. Please check if krishna.png and flute.mp3 are in the same folder.
+</div>
+
+<!-- Letter Container (Initially Hidden) -->
+<div class="letter" id="letterContainer">
+  <h1 id="greeting">My dear Pallavi<span class="heart-emoji">💗</span></h1>
+  
+  <!-- Changed to local krishna.png file -->
+  <img src="krishna.png" class="krishna" id="krishnaImage" alt="Krishna" onerror="handleImageError()">
+  
+  <p id="line1">I see the worries you hide behind your smile.</p>
+  
+  <p id="line2">Do not be afraid I am closer than your breath.</p>
+  
+  <p id="line3">When your heart feels tired, rest it in Me.</p>
+  
+  <p id="line4">When tears come, let them flow I will catch them.</p>
+  
+  <p class="special" id="line5">Keep smiling. My <span class="sakhi">sakhi</span>.</p>
+  
+  <p id="line6">I am walking with you... always.</p>
+  
+  <div class="signature" id="signature">— Krishna</div>
+</div>
+
+<!-- Lotus -->
+<img src="https://cdn-icons-png.flaticon.com/512/196/196859.png" class="lotus" alt="Lotus">
+
+<!-- Background Music - Changed to local flute.mp3 file -->
+<audio controls loop id="backgroundMusic" onerror="handleAudioError()">
+  <source src="flute.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+<!-- Stars and Hearts will be generated here -->
+<script>
+  // Handle image loading errors
+  function handleImageError() {
+    console.log("Krishna image not found, using fallback image");
+    document.getElementById('krishnaImage').src = 'https://images.unsplash.com/photo-1547480053-7d174c4b5391?w=400&h=400&fit=crop&crop=center';
+    showErrorMessage();
+  }
+
+  // Handle audio loading errors
+  function handleAudioError() {
+    console.log("Flute audio not found, using fallback audio");
+    document.getElementById('backgroundMusic').innerHTML = `
+      <source src="https://assets.mixkit.co/music/preview/mixkit-spiritual-awakening-915.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    `;
+    showErrorMessage();
+  }
+
+  // Show error message
+  function showErrorMessage() {
+    const errorMsg = document.getElementById('errorMessage');
+    errorMsg.style.display = 'block';
+    setTimeout(() => {
+      errorMsg.style.display = 'none';
+    }, 5000);
+  }
+
+  // Create floating music notes
+  function createMusicNotes() {
+    const notes = ['♩', '♪', '♫', '♬', '♭', '♯'];
+    const container = document.body;
+    
+    for(let i = 0; i < 12; i++) {
+      setTimeout(() => {
+        let note = document.createElement('div');
+        note.className = 'music-note';
+        note.textContent = notes[Math.floor(Math.random() * notes.length)];
+        note.style.left = Math.random() * 100 + '%';
+        note.style.top = '80%';
+        note.style.color = ['#ffd700', '#ff6b8b', '#9b87f5'][Math.floor(Math.random() * 3)];
+        note.style.animationDelay = Math.random() * 2 + 's';
+        note.style.animationDuration = (Math.random() * 2 + 3) + 's';
+        container.appendChild(note);
+        
+        // Remove note after animation
+        setTimeout(() => {
+          if (note.parentNode) {
+            note.parentNode.removeChild(note);
+          }
+        }, 4000);
+      }, i * 300);
+    }
+  }
+
+  // Create stars
+  function createStars() {
+    const container = document.body;
+    for(let i = 0; i < 150; i++) {
+      let star = document.createElement('div');
+      star.className = 'star';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.left = Math.random() * 100 + '%';
+      const size = Math.random() * 2 + 1;
+      star.style.width = size + 'px';
+      star.style.height = size + 'px';
+      star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+      star.style.animationDelay = Math.random() * 5 + 's';
+      container.appendChild(star);
+    }
+  }
+
+  // Create hearts
+  function createHearts() {
+    const container = document.body;
+    for(let i = 0; i < 8; i++) {
+      let heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.style.left = Math.random() * 100 + '%';
+      heart.style.animationDelay = Math.random() * 5 + 's';
+      const size = 15 + Math.random() * 20;
+      heart.style.width = size + 'px';
+      heart.style.height = size + 'px';
+      heart.style.backgroundColor = `hsl(${330 + Math.random() * 30}, 100%, 75%)`;
+      container.appendChild(heart);
+    }
+  }
+
+  // Animate elements one by one
+  function animateElements() {
+    const elements = [
+      'greeting',
+      'krishnaImage',
+      'line1',
+      'line2', 
+      'line3',
+      'line4',
+      'line5',
+      'line6',
+      'signature'
+    ];
+    
+    // Show letter container
+    document.getElementById('letterContainer').classList.add('show');
+    
+    // Animate each element with delay
+    elements.forEach((elementId, index) => {
+      setTimeout(() => {
+        const element = document.getElementById(elementId);
+        if (element) {
+          element.classList.add('show');
+        }
+      }, index * 1000); // 1 second delay between each element
+    });
+  }
+
+  // Initialize when page loads
+  document.addEventListener('DOMContentLoaded', function() {
+    createStars();
+    createHearts();
+    
+    // Setup button click event
+    const openBtn = document.getElementById('openLetterBtn');
+    const welcomeScreen = document.getElementById('welcomeScreen');
+    const audio = document.getElementById('backgroundMusic');
+    
+    openBtn.addEventListener('click', function() {
+      // Start playing the flute music immediately
+      audio.play().then(() => {
+        console.log("Flute music started playing");
+      }).catch(e => {
+        console.log("Audio play failed:", e);
+      });
+      
+      // Show audio player
+      audio.classList.add('show');
+      
+      // Create floating music notes
+      createMusicNotes();
+      
+      // Fade out welcome screen
+      welcomeScreen.style.opacity = '0';
+      
+      setTimeout(() => {
+        welcomeScreen.style.display = 'none';
+        // Start the letter animation
+        animateElements();
+      }, 1000);
+    });
+    
+    // Also allow clicking anywhere on welcome screen
+    welcomeScreen.addEventListener('click', function(e) {
+      if (e.target === welcomeScreen) {
+        openBtn.click();
+      }
+    });
+    
+    // Start music notes animation every 5 seconds
+    setInterval(createMusicNotes, 5000);
+  });
+</script>
+
+</body>
+</html>
